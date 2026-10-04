@@ -1,0 +1,47 @@
+# --- Secrets (priorità assoluta) ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.jks
+*.mobileprovision
+secrets/
+
+# --- Python / FastAPI ---
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+
+# --- Node / Expo / React Native ---
+node_modules/
+.expo/
+dist/
+web-build/
+npm-debug.*
+yarn-error.log
+
+# --- Build native generati ---
+/mobile/ios/
+/mobile/android/
+*.apk
+*.aab
+*.ipa
+
+# --- Logs ---
+*.log
+logs/
+
+# --- IDE / OS ---
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
