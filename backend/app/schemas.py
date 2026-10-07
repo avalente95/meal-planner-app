@@ -28,7 +28,7 @@ class RecipeIngredientOutput(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     ingredient_id: UUID
     name: str
-    quantity: Decimal
+    quantity: float
     unit: Literal["g", "pcs", "ml"]
 
 class RecipeInput(BaseModel):
