@@ -1,8 +1,8 @@
 from fastapi import APIRouter, FastAPI
-import config
-from routers import ingredients
+from app.config import get_settings
+from app.routers import ingredients
 
-ENVIRONMENT = config.get_settings().environment
+ENVIRONMENT = get_settings().environment
 
 app = FastAPI() if ENVIRONMENT == "development" else FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 router = APIRouter();
