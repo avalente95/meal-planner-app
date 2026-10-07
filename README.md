@@ -9,3 +9,5 @@ hardening step by step as the app grows.
 Status: early stage, work in progress.
 
 Stack: React Native (Expo), FastAPI, Supabase.
+
+Security: Added SAST and SCA with CodeQL and Dependabot
