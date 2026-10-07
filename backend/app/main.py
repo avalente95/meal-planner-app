@@ -1,6 +1,6 @@
 from fastapi import APIRouter, FastAPI
 from app.config import get_settings
-from app.routers import ingredients
+from app.routers import ingredients, recipes
 
 ENVIRONMENT = get_settings().environment
 
@@ -15,3 +15,4 @@ def health_check():
 
 
 app.include_router(ingredients.router, prefix="/api/v1")
+app.include_router(recipes.router, prefix="/api/v1")
