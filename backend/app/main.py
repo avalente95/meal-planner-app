@@ -1,3 +1,5 @@
+import hashlib
+
 from fastapi import FastAPI, Depends, HTTPException, status, Header
 from typing import Annotated
 from app.config import get_settings
@@ -8,6 +10,9 @@ ENVIRONMENT = get_settings().environment
 API_KEY = get_settings().api_key
 if API_KEY == "":
     raise KeyError
+
+print(len(API_KEY))
+print(hashlib.sha256(API_KEY.encode()).hexdigest()[:8])
 
 app = FastAPI() if ENVIRONMENT == "development" else FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 
