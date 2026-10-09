@@ -1,6 +1,6 @@
 import hashlib
 
-from fastapi import FastAPI, Depends, HTTPException, status, Header
+from fastapi import FastAPI, Depends, HTTPException, status, Header, Request
 from typing import Annotated
 from app.config import get_settings
 from app.routers import ingredients, recipes
