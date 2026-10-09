@@ -11,7 +11,7 @@ if API_KEY == "":
 
 app = FastAPI() if ENVIRONMENT == "development" else FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 
-def verify_token(x_api_key: str | None = None):
+def verify_token(x_api_key: Annotated[str | None, Header()]):
     if not x_api_key:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not authorized")
     if not compare_digest(x_api_key.encode(), API_KEY.encode()):
