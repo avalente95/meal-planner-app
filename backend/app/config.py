@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=Path(__file__).resolve().parent.parent / ".env", extra="ignore")
     database_url: SecretStr
     environment: str = "production"
+    api_key: str
 
 @lru_cache
 def get_settings() -> Settings:
