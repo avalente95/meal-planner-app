@@ -1,7 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
 
-import backend.app.main as main
+import app.main as main
 
 ALWAYS = {
     "X-Content-Type-Options": "nosniff",

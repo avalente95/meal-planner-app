@@ -3,6 +3,8 @@ import hashlib
 from fastapi import FastAPI, Depends, HTTPException, status, Header, Request
 from typing import Annotated
 from app.config import get_settings
+from app.logging_config import configure_logging
+from app.logging_middleware import RequestLoggingMiddleware
 from app.routers import ingredients, recipes
 from secrets import compare_digest
 
@@ -15,6 +17,8 @@ print(len(API_KEY))
 print(hashlib.sha256(API_KEY.encode()).hexdigest()[:8])
 
 app = FastAPI() if ENVIRONMENT == "development" else FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
+configure_logging(ENVIRONMENT, "INFO")
+app.add_middleware(RequestLoggingMiddleware)
 
 def verify_token(x_api_key: Annotated[str | None, Header()] = None):
     if not x_api_key:
