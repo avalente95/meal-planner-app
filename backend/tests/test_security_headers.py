@@ -78,7 +78,7 @@ def boom_route():
     ]
 
 
-@pytest.mark.xfail(strict=True, reason="Limite noto: 500 senza header, fix in W10 (SEC-16)")
+@pytest.mark.xfail(strict=True, reason="Will be fixed later")
 def test_unhandled_500_has_headers(boom_route, monkeypatch):
     set_env(monkeypatch, "production")
     c = TestClient(main.app, raise_server_exceptions=False)

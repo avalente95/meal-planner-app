@@ -1,4 +1,7 @@
 import { config } from "../config";
+import { supabase } from '../lib/supabase';
+
+const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 const TIMEOUT_MS = 10_000;
 
@@ -48,4 +51,22 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
   } finally {
     clearTimeout(timer);
   }
+}
+
+export async function apiFetch(path: string, init: RequestInit = {}): Promise<Response> {
+  const { data } = await supabase.auth.getSession();
+  if (!data.session) {
+    throw new Error('NOT_AUTHENTICATED');
+  }
+
+  const headers = new Headers(init.headers);
+  headers.set('Authorization', `Bearer ${data.session.access_token}`);
+
+  const res = await fetch(`${API_URL}${path}`, { ...init, headers });
+
+  if (res.status === 401) {
+    await supabase.auth.signOut();
+    throw new Error('SESSION_EXPIRED');
+  }
+  return res;
 }
