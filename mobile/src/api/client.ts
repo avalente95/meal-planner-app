@@ -35,7 +35,6 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
     const res = await fetch(`${config.apiUrl}${path}`, {
       method: options.method ?? "GET",
       headers: {
-        "X-API-Key": config.apiKey,
         ...(hasBody && { "Content-Type": "application/json" }),
       },
       body: hasBody ? JSON.stringify(options.body) : undefined,
