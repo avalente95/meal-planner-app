@@ -1,30 +1,18 @@
-import hashlib
 
-from fastapi import FastAPI, Depends, HTTPException, status, Header, Request
-from typing import Annotated
+from fastapi import FastAPI, Depends, Request
+
 from app.config import get_settings
 from app.logging_config import configure_logging
 from app.logging_middleware import RequestLoggingMiddleware
-from app.routers import ingredients, recipes
-from secrets import compare_digest
+from app.routers import ingredients, recipes, me
+from app.auth import get_current_user
+
 
 ENVIRONMENT = get_settings().environment
-API_KEY = get_settings().api_key
-if API_KEY == "":
-    raise KeyError
-
-print(len(API_KEY))
-print(hashlib.sha256(API_KEY.encode()).hexdigest()[:8])
 
 app = FastAPI() if ENVIRONMENT == "development" else FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 configure_logging(ENVIRONMENT, "INFO")
 app.add_middleware(RequestLoggingMiddleware)
-
-def verify_token(x_api_key: Annotated[str | None, Header()] = None):
-    if not x_api_key:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not authorized")
-    if not compare_digest(x_api_key.encode(), API_KEY.encode()):
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not authorized")
 
 
 @app.get("/health")
@@ -44,5 +32,6 @@ async def add_headers(request: Request, call_next):
 
 
 
-app.include_router(ingredients.router, prefix="/api/v1", dependencies=[Depends(verify_token)])
-app.include_router(recipes.router, prefix="/api/v1", dependencies=[Depends(verify_token)])
+app.include_router(ingredients.router, prefix="/api/v1", dependencies=[Depends(get_current_user)])
+app.include_router(recipes.router, prefix="/api/v1", dependencies=[Depends(get_current_user)])
+app.include_router(me.router, prefix="/api/v1")

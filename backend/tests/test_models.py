@@ -20,15 +20,14 @@ from sqlalchemy.orm import Session
 from app.db import engine
 from app.models import Ingredient, Recipe, RecipeIngredient
 
-TAG = uuid4().hex[:8]  # evita collisioni con ingredienti già presenti
+TAG = uuid4().hex[:8] 
 
 
 class _Annulla(Exception):
-    """Usata per forzare il rollback del savepoint a fine test."""
+    """Used to force rollback"""
 
 
 def rifiutato(session, azione):
-    """True se il DB rifiuta l'operazione con IntegrityError."""
     try:
         with session.begin_nested():
             azione()

@@ -47,3 +47,9 @@ class RecipeIngredient(Base):
     @property
     def name(self) -> str:
         return self.ingredient.name
+
+class CurrentUser(Base):
+    """User model"""
+    __tablename__ = "users"
+
+    id: Mapped[UUID] = mapped_column(primary_key=True, server_default=func.gen_random_uuid())
